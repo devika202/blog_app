@@ -65,11 +65,10 @@
               </li>  
              <% end %>  
           </ul>
-          <form class="d-flex">
+          <form class="d-flex me-2">
           <% if user_signed_in? %>
-                <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "form-control me-2", data: { confirm: "Are you sure to logout ?" } %>
+                <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "form-control me-1", data: { confirm: "Are you sure to logout ?" } %>
           <% end %> 
-           <form class="d-flex me-3">
             
               <form class="d-flex me-3">
                 <% @q ||= Article.ransack(params[:q]) %>
