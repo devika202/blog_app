@@ -4,12 +4,15 @@ class ArticlesController < ApplicationController
     before_action :require_same_user, only: [:edit, :update, :destroy]
 
     def show
+        @article = Article.find(params[:id])
+        @comment = Comment.new(article: @article)
     end
 
-    def index 
-        @articles = Article.paginate(page: params[:page], per_page: 3)
+    def index
+        @q = Article.ransack(params[:q])
+        @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
     end
-
+      
     def new
         @article = Article.new
     end

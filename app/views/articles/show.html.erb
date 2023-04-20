@@ -27,9 +27,56 @@
                 </div>       
             </div>     
         </div>   
+        
+
+        <h4 class="ui center aligned medium icon header">
+            <i class="circular orange coffee icon"></i>
+            Comments
+        </h4>
+        <div class="ui fluid raised card chatbox">
+            <div class="content" id="messages">
+                <div class="ui feed" id="message-container">
+                 <% @article.comments.each do |comment| %>
+                    <div class="event">
+                        <div class="content">
+                            <div class="summary">
+                                <span class="user">
+                                    <% if comment.user %>
+                                        <b><%= comment.user.email %> >> commented <%= time_ago_in_words(comment.created_at) %> ago:</b>
+                                        <h6><%= simple_format(comment.content) %></h6>
+                                    <% else %>
+                                        <p><strong>Anonymous commented <%= time_ago_in_words(comment.created_at) %> ago:</p>
+                                        <p><%= simple_format(comment.content) %></p>
+
+                                    <% end %>
+                                </span>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+                <br>
+
+                <%= form_with(model: [ @article, @comment ], html: {class: "ui reply form", role: "form"}, url: article_comments_path(@article), remote: true) do |form| %>
+                <div class="field">
+                    <div class="ui fluid icon input">
+                    <div class="field comment-form" style="display: flex; align-items: center;">
+                        <div class="ui fluid icon input " style="flex: 1;">
+                        <%= form.text_area :content, class: 'tinymce', rows: 1 %>
+                        <%= form.hidden_field :user_id, value: current_user.id if user_signed_in? %>
+                        <%= form.hidden_field :article_id %>
+                        <%= form.button :submit, class: "btn btn-primary ml-3" %>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <% end %>
+
+             </div>
+           </div>
+        </div>
         <%= link_to 'Cancel and return to articles listing',articles_path, class: "btn btn-success"  %>
+        </div>
     </div>
-</div>
-</div>
-
-
+</div>  
+<br><br><br><br>

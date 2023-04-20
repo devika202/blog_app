@@ -17,8 +17,15 @@
 //= require jquery3
 //= require popper
 //= require bootstrap-sprockets
+//= require my_validation_script
 import "@hotwired/turbo-rails"
 import "controllers"
 import "bootstrap"
 
 
+tinymce.init({
+    selector: 'textarea',
+    plugins: 'link image code',
+    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+  });
+  

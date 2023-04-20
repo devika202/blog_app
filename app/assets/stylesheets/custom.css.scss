@@ -1,3 +1,6 @@
+.comment-form {
+  display: flex;
+}
 #logo {
     float: left;
     font-size: 1.7em;
@@ -10,20 +13,22 @@
   #home-container {
     margin-top: 75px;
 }
-
 #sticky-footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  margin-bottom: -22px;
+  height: 60px; /* Set a height for the footer */
   background-color: #343a40;
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
+  color: white;
 }
+
 body {
+  height: 100vh;
+  overflow-y: auto;
   margin-bottom: 4rem;
+
 }
+
 
 .jumbotron {
     background-image: asset-url('eugene-chystiakov-wcMysLw5ROM-unsplash.jpg');
