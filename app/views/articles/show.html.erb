@@ -61,7 +61,7 @@
                     <div class="ui fluid icon input">
                     <div class="field comment-form" style="display: flex; align-items: center;">
                         <div class="ui fluid icon input " style="flex: 1;">
-                            <%= form.text_area :content, class: 'tinymce', rows: 1 %>
+                            <%= form.cktext_area :content, class: 'ckeditor' %>
                             <%= form.hidden_field :user_id, value: current_user.id if user_signed_in? %>
                             <%= form.hidden_field :article_id %>
                             <%= form.button :submit, class: "btn btn-primary ml-3" %>
