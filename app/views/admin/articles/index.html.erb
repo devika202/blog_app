@@ -1,5 +1,5 @@
 <div class="container">
-<h1 class="text-center mt-4">Article List</h1>
+  <h1 class="text-center mt-4">Article List</h1>
   <table class="table table-striped table-bordered table-hover">
     <thead class="thead-dark">
       <tr>
@@ -13,7 +13,18 @@
         <tr>
           <td scope="row"><%= article.user.name %></td>
           <td scope="row"><%= article.title %></td>
-          <td scope="row"><%= link_to "View", article_path(article), class: "btn btn-primary" %></td>
+          <td scope="row">
+            <%= link_to "View", article_path(article), class: "btn btn-primary" %>
+            <% if article.status == "declined" %>
+              <p><b>Status: </b>Declined</p>
+            <% elsif article.status == "approved" %>
+              <p><b>Status: </b>Approved</p>
+            <% else %>
+              <p><b>Status: </b>Pending</p>
+              <%= link_to "Approve", approve_article_path(article), method: :put, class: "btn btn-success" %>
+              <%= link_to "Decline", decline_article_path(article), method: :put, class: "btn btn-danger" %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

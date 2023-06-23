@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :articles
   get 'my_articles', to: 'articles#my_articles', as: 'my_articles'
   resources :users, except: [:new]
-  resources :categories, except: [:destroy]
+  resources :categories
   devise_scope :user do
     get "/users/sign_out" => "devise/sessions#destroy"
   end
@@ -17,4 +17,11 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :articles, only: [:index]
   end
+  resources :articles do
+    member do
+      put 'approve'
+      put 'decline'
+    end
+  end
+  
 end

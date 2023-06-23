@@ -4,36 +4,44 @@
     <%= render 'shared/errors', obj: @article %>
   <%= form_with(model: @article, class: "shadow p-3 mb-3 bg-info rounded", local: true, multipart: true) do |f| %>
       <div class="form-group row form-label">
-        <%= f.label :title,class: "col-2 col-form-label text-light" %>
+        <div class="col-2 col-form-label text-light">
+          <%= f.label :title %>
+        </div>
         <div class="col-10">
           <%= f.text_field :title, class: "form-control shadow rounded", placeholder: "Title of article" %>
         </div>
       </div>
       <div class="form-group row form-label">
-        <%= f.label :description, class: "col-2 col-form-label text-light" %>
+        <div class="col-2 col-form-label text-light">
+          <%= f.label :description %>
+        </div>
         <div class="col-10">
           <%= f.text_area :description, class: "form-control shadow rounded", placeholder: "Description of an article", data: { "simplemde": true } %>
         </div>
       </div>
 
       <div class="form-group row form-label">
-        <%= f.label :category,class: "col-2 col-form-label text-light" %>
+        <div class="col-2 col-form-label text-light">
+          <%= f.label :category %>
+        </div>
         <div class="col-10">
           <%= f.collection_select(:category_ids, Category.all, :id, :name,
           {prompt: "Make your selection from the list below(can be empty)"}, { multiple: true,size: 3, class: "custom-select shadow rounded"})%>
           </div>
       </div>
       <div class="form-group row form-label">
-        <%= f.label :image, class: "col-2 col-form-label text-light" %>
+        <div class="col-2 col-form-label text-light">
+          <%= f.label :image %>
+        </div>
         <div class="col-10">
           <%= f.file_field :image, class: "form-control-file" %>
         </div>
       </div>
       <div class="form-group row justify-content-center form-label">
-        <%= f.submit class: "btn btn-outline-light btn-lg" %>
+        <%= f.submit class: "btn btn-outline-dark btn-lg", style: "width: 200px;" %>
       </div>
         <% end %>
       </div>
-      <%= link_to 'Cancel and return to articles listing',articles_path, class: "btn btn-success"  %>
+      <%= link_to 'Cancel and return to articles listing',articles_path, class: "btn btn-info btn-lg", style: "width: 500px;"  %>
       </div>
 </div>

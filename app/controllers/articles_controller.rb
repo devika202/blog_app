@@ -22,10 +22,24 @@ class ArticlesController < ApplicationController
 
     def edit
     end
+    def approve
+        @article = Article.find(params[:id])
+        @article.update(status: :approved)
+        redirect_to @article, notice: 'Article has been approved.'
+      end
+      
+      def decline
+        @article = Article.find(params[:id])
+        @article.update(status: :declined)
+        redirect_to @article, notice: 'Article has been declined.'
+      end
+      
 
     def create
         @article = Article.new(article_params)
-        @article.user = current_user
+        @article = current_user.articles.build(article_params)
+        @article.image.attach(params[:article][:image])
+        @article.status = "pending"
         if @article.save
           
           flash[:notice] = "Article was created successfully."
@@ -42,6 +56,10 @@ class ArticlesController < ApplicationController
       
 
     def update
+        if params[:article][:image].present?
+            @article.image.attach(params[:article][:image])
+            @article.image.purge_later 
+          end
         if @article.update(article_params)
             flash[:notice] = "Article updated successfully"
             redirect_to @article

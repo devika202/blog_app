@@ -14,7 +14,7 @@
                     <% checked = params[:q] && params[:q][:categories_id_eq_any].present? && params[:q][:categories_id_eq_any].include?(category.id.to_s) %>
                     <%= check_box_tag 'q[categories_id_eq_any][]', category.id, checked %>
                     <%= category.name %><br>
-                <% end %>
+                <% end %><br>
                 <%= f.submit "FILTER", class: 'btn btn-primary' %>
             <% end %>
         </div>
