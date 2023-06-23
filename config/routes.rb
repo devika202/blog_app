@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   post '/' => 'pages#home'
   get 'index', to: 'pages#index'
   resources :articles
+  get 'my_articles', to: 'articles#my_articles', as: 'my_articles'
   resources :users, except: [:new]
   resources :categories, except: [:destroy]
   devise_scope :user do
@@ -13,5 +14,7 @@ Rails.application.routes.draw do
   resources :articles do
     resources :comments
   end
-  
+  namespace :admin do
+    resources :articles, only: [:index]
+  end
 end

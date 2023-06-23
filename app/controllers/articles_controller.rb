@@ -9,6 +9,9 @@ class ArticlesController < ApplicationController
     end
 
     def index
+        @search = Article.includes(:categories).ransack(params[:q])
+        @articles = @search.result.includes(:categories).paginate(page: params[:page], per_page: 9)
+        @categories = Category.all
         @q = Article.ransack(params[:q])
         @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
     end
@@ -33,6 +36,11 @@ class ArticlesController < ApplicationController
         end
     end
 
+    def my_articles
+        @articles = current_user.articles
+    end
+      
+
     def update
         if @article.update(article_params)
             flash[:notice] = "Article updated successfully"
@@ -54,7 +62,7 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-        params.require(:article).permit(:title, :description, category_ids: [])
+        params.require(:article).permit(:title, :description,:image, category_ids: [])
     end
 
     def require_same_user

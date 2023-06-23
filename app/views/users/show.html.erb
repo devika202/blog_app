@@ -1,10 +1,10 @@
-<h1 class="text-center mt-4"><%= @user.email%>'s profile</h1>
+<h1 class="text-center mt-4"><%= @user.name%>'s profile</h1>
 
 <%= gravatar_for @user,size:200 %>
 <% if user_signed_in? && @user == current_user %>
 
 <div class="text-center mt-4">
-    <%= link_to "Edit your profile", edit_user_path(@user),class: "btn btn-info" %>
+    <%= link_to "Edit your profile", edit_user_registration_path,class: "btn btn-info" %>
 </div>
 <% end %>
 
@@ -13,7 +13,45 @@
 <div class="flickr_pagination">
     <%= will_paginate @articles, :container => false %>
 </div>
-<%= render 'articles/article' %>
+<div class="container top">
+    <% @articles.each do |article|%>
+        <div class="row">
+            <div class="col-md-8 mt-6" style="margin-left: 239px; margin-top: 3px;">                    
+                <div class="card text-center shadow mb-5 bg-white rounded">
+                            <div class="card-header fst-italic">
+                                <h5 class="card-title"><%= link_to article.title, article_path(article), class: "text-success" %></h5>
+                                <% if article.categories.any? %>
+                                <div class="mt-2"><%= render article.categories %></div>
+                            <% end %>
+                            </div>
+                            <div class="card-body">
+                             <% if article.image.attached? %>
+                                    <%= image_tag article.image, class: "card-img-top size img-fluid mx-auto d-block", style: "object-fit: cover; width: 100%; height: 200px;" %>
+                                <% else %>
+                                    <%= image_tag "default-image.jpg", class: "card-img-top img-fluid mx-auto d-block", style: "object-fit: cover; width: 100%; height: 200px;" %>
+                                <% end %>
+                                <% if article.user%>
+                                by <%= link_to article.user.name, user_path(article.user) %>
+                                <% end %>
+                                <p class="card-text"><%= truncate(article.description, length: 100) %></p>
+                                <%= link_to "View", article_path(article), class: "btn btn-outline-info" %><br><br>
+                                <% if user_signed_in? && (article.user == current_user || current_user.admin?) %>
+                                <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-warning" %>
+                                <%= link_to "Delete", article_path(article), method: :delete, data: { confirm: "Are you sure you want to delete this article?" }, class: "btn btn-outline-danger" %>
+                                <% end %>
+                                </div>
+                                <div class="card-footer text-muted">
+                                <small>Created <%= time_ago_in_words(article.created_at) %> ago,
+                                edited <%= time_ago_in_words(article.updated_at) %> ago</small>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <% end %>
+        </div>
+</div>
+             
+
 <div class="flickr_pagination">
     <%= will_paginate @articles, :container => false %>
 </div>

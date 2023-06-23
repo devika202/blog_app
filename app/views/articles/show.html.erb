@@ -5,8 +5,12 @@
             <div class="col-8 mt-4">   
                 <div class="card text-center shadow mb-5 bg-white rounded">      
                     <div class="card-header text-center font-italic">   
-                        by <%= @article.user.email if @article.user%> 
-                        <%= link_to gravatar_for(@article.user), user_path(@article.user) %>
+                        <% if @article.image.attached? %>
+                            <%= image_tag @article.image, class: "card-img-top size img-fluid mx-auto d-block", style: "object-fit: cover; width: 100%; height: 200px;" %>
+                        <% else %>
+                            <%= image_tag "default-image.jpg", class: "card-img-top img-fluid mx-auto d-block", style: "object-fit: cover; width: 100%; height: 200px;" %>
+                        <% end %> 
+                            by <%= @article.user.name if @article.user%>                        
                         <% if @article.categories.any? %>
                             <div class="mt-2"><%= render @article.categories %></div>
                         <% end %>
@@ -26,55 +30,58 @@
                 </div>       
             </div>     
         </div>   
-        <h4 class="ui center aligned medium icon header">
+   <div class="ui fluid raised chatbox card text-bg-light mb-3">
+    <div class="container">
+      <h1 class="text-center mt-4 ">
             <i class="circular orange coffee icon"></i>
-            Comments
-        </h4>
-        <div class="ui fluid raised card chatbox">
-            <div class="content" id="messages">
-                <div class="ui feed" id="message-container">
-                 <% @article.comments.each do |comment| %>
-                    <div class="event">
-                        <div class="content">
-                        <div class="summary">
-                            <span class="user">
-                            <% if comment.user %>
-                                <b><%= comment.user.email %> >> commented <%= time_ago_in_words(comment.created_at) %> ago:</b>
-                                <h6><%= simple_format(comment.content) %></h6>
-                            <% else %>
-                                <b>Anonymous >> commented <%= time_ago_in_words(comment.created_at) %> ago:</b>
-                                <h6><%= simple_format(comment.content) %></h6>
-                            <% end %>
-                            <% if user_signed_in? && current_user.admin? %>
-                                <%= button_to "Delete", article_comment_path(@article, comment), method: :delete, data: { confirm: "Are you sure you want to delete this comment?" }, class: "btn btn-outline-danger" %>
-                            <% end %>
-                            </span>
-                            <br>
+                  COMMENTS
+              </h1><br>
+                <div class="content" id="messages">
+                    <div class="ui feed" id="message-container">
+                    <% @article.comments.each do |comment| %>
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                  <span class="user">
+                                  <% if comment.user %>
+                                      <b><%= comment.user.name %> >> commented <%= time_ago_in_words(comment.created_at) %> ago:</b>
+                                      <h6><%= simple_format(comment.content) %></h6>
+                                  <% else %>
+                                      <b>Anonymous >> commented <%= time_ago_in_words(comment.created_at) %> ago:</b>
+                                      <h6><%= simple_format(comment.content) %></h6>
+                                  <% end %>
+                                  <% if user_signed_in? && current_user.admin? %>
+                                      <%= button_to "Delete", article_comment_path(@article, comment), method: :delete, data: { confirm: "Are you sure you want to delete this comment?" }, class: "btn btn-outline-danger" %>
+                                  <% end %>
+                                  </span>
+                                  <br>
+                              </div>
+                            </div>
                         </div>
+                    <% end %>
+                    <br>
+                  <% unless user_signed_in? && current_user.admin? %>
+                    <%= form_with(model: [ @article, @comment ], html: {class: "ui reply form", role: "form"}, url: article_comments_path(@article), remote: true) do |form| %>
+                    <div class="field">
+                      <div class="ui fluid icon input">
+                        <div class="field comment-form" style="display: flex; align-items: center;">
+                          <div class="ui fluid icon input " style="flex: 1;">&nbsp;&nbsp;
+                            <%= form.text_area :content, class: 'tinymce', rows: 4, style: "width: 90%;" ,placeholder: "Enter your comment!!!" %>&nbsp;&nbsp;&nbsp;
+                            <% if user_signed_in? %>
+                              <%= form.hidden_field :user_id, value: current_user.id %>
+                            <% end %>
+                            <%= form.hidden_field :article_id %>
+                            <%= form.button :submit, class: "btn btn-primary", style: "margin-top: -80px;" %>
+                          </div>
                         </div>
+                      </div>
                     </div>
                     <% end %>
-
-                <br>
-                <%= form_with(model: [ @article, @comment ], html: {class: "ui reply form", role: "form"}, url: article_comments_path(@article), remote: true) do |form| %>
-                <div class="field">
-                    <div class="ui fluid icon input">
-                    <div class="field comment-form" style="display: flex; align-items: center;">
-                        <div class="ui fluid icon input " style="flex: 1;">
-                            <%= form.cktext_area :content, class: 'ckeditor col-8' %>
-                            <%= form.hidden_field :user_id, value: current_user.id if user_signed_in? %>
-                            <%= form.hidden_field :article_id %>
-                            <%= form.button :submit, class: "btn btn-primary ml-3" %>
-                        </div>
-                    </div>
-                    </div>
+                  <% end %>
                 </div>
-                <% end %>
-             </div>
-           </div>
-        </div>
-        <%= link_to 'Cancel and return to articles listing',articles_path, class: "btn btn-success"  %>
+              </div>
+            
         </div>
     </div>
-</div>  
-<br><br><br>
+  </div>    
+</div><br><br>

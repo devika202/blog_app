@@ -6,4 +6,5 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :validatable
   attribute :admin, :boolean, default: false
+  validates :name, presence: true
 end
