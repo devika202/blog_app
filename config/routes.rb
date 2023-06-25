@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'likes/create'
+  get 'likes/destroy'
   mount Ckeditor::Engine => '/ckeditor'
   devise_for :users
   root 'pages#home'
@@ -23,5 +25,17 @@ Rails.application.routes.draw do
       put 'decline'
     end
   end
+  resources :articles do
+    resources :likes, only: [:create, :destroy]
+  end
+  resources :articles do
+  member do
+    post 'likes'
+    delete 'like/:like_id', action: :unlike, as: :unlike
+    post 'dislikes'
+    delete 'dislike/:like_id', action: :undislike, as: :undislike
+  end
+end
+
   
 end

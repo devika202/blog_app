@@ -18,7 +18,26 @@
                     <div class="card-body text-center">      
                         <div class="card-text text-left">
                             <%= simple_format (@article.description) %>
-                        </div>   
+                        </div>  
+                        <% if user_signed_in? %>
+                          <% if current_user != @article.author %>
+                            <div class="btn-group" role="group">
+                              <% if @article.liked_by?(current_user) %>
+                                <%= button_to 'Dislike', article_like_path(@article, @article.likes.find_by(user: current_user)), method: :delete, class: 'btn btn-danger' %>
+                              <% else %>
+                                <%= button_to 'Like', article_likes_path(@article), method: :post, class: 'btn btn-primary' %>
+                              <% end %>
+                            </div>
+                          <% end %>
+                        <% else %>
+                          <div class="btn-group" role="group">
+                            <%= button_to 'Like', article_likes_path(@article), method: :post, class: 'btn btn-primary' %>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <%= button_to 'Dislike', article_like_path(@article), method: :delete, class: 'btn btn-danger' %>
+                          </div>
+                        <% end %><br><br>
+                        <p><b>LIKES: </b><%= @article.likes.count %></p><br>
+
+
                         <% if user_signed_in? && (@article.user == current_user || current_user.admin?) %>
                         <% if @article.approved? %>
                           <% if user_signed_in? && (@article.user == current_user) %>

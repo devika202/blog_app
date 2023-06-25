@@ -56,9 +56,7 @@
               </li>
             <% end %>
 
-            <% unless user_signed_in? %>
-                <%= link_to "View categories",categories_path, class:"nav-link" %>
-            <% end %>  
+             
             <% if user_signed_in? %>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
