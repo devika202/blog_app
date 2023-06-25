@@ -22,3 +22,12 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "bootstrap"
+$(document).ready(function() {
+    $('input[data-autocomplete-source]').each(function() {
+      var input = $(this);
+      input.autocomplete({
+        source: JSON.parse(input.attr('data-autocomplete-source'))
+      });
+    });
+  });
+  

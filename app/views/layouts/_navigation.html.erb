@@ -56,12 +56,10 @@
               </li>
             <% end %>
 
-            <% if user_signed_in? %>
-              <% unless current_user.admin? %>
+            <% unless user_signed_in? %>
                 <%= link_to "View categories",categories_path, class:"nav-link" %>
-              <% end %> 
             <% end %>  
-            <% if user_signed_in? && current_user.admin? %>
+            <% if user_signed_in? %>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Categories
@@ -76,15 +74,16 @@
              <% end %>  
           </ul>
         <ul class="navbar-nav mb-2 mb-lg-0">
-        <% if current_page?(articles_path) %>
-              <form class="d-flex me-3">
-                <% @q ||= Article.ransack(params[:q]) %>
-                <%= search_form_for @q, url: articles_path, method: :get do |f| %>
-                  <%= f.search_field :title_cont, class: 'form-control me-2 text-dark', placeholder: 'Search by article title' %>
-                  <%= f.submit 'Search', class: 'btn btn-success' %>
-                <% end %>
-              </form>
+          <% if current_page?(articles_path) %>
+            <form class="d-flex me-3">
+              <% @q ||= Article.ransack(params[:q]) %>
+              <%= search_form_for @q, url: articles_path, method: :get do |f| %>
+                <%= f.search_field :title_or_tags_cont, class: 'form-control me-2 text-dark', placeholder: 'Search by article title or tags', data: { autocomplete_source: Article.distinct.pluck(:tags).compact.to_json } %>
+                <%= f.submit 'Search', class: 'btn btn-success' %>
+              <% end %>
+            </form>
           <% end %>
+
           <% if user_signed_in? %>
               <li><%= link_to "<strong>LOGOUT</strong>".html_safe, destroy_user_session_path, method: :delete, class: "nav-link" ,data: { confirm: "Are you sure to logout ?" }%></li>&nbsp; &nbsp; &nbsp;
           <% end %> 

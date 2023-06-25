@@ -3,10 +3,20 @@ class ArticlesController < ApplicationController
     before_action :authenticate_user!, except: [:show, :index]
     before_action :require_same_user, only: [:edit, :update, :destroy]
 
+    
     def show
         @article = Article.find(params[:id])
         @comment = Comment.new(article: @article)
-    end
+        if current_user && current_user.admin?
+
+        else
+            if @article.approved?
+            else
+                redirect_to my_articles_path, alert: "Please wait while the admin approves to view the article."
+            end
+        end
+      end
+      
 
     def index
         @search = Article.includes(:categories).ransack(params[:q])
@@ -80,7 +90,7 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-        params.require(:article).permit(:title, :description,:image, category_ids: [])
+        params.require(:article).permit(:title, :description,:image,:tags, category_ids: [])
     end
 
     def require_same_user
