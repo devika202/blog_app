@@ -111,7 +111,7 @@
           1,
           1,
           1,
-          28,
+          32,
           null,
           null,
           null,
@@ -2559,6 +2559,54 @@
           null
         ]
       },
+      "/home/devika/rails/blog_app/spec/views/layouts/_footer_spec.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          0,
+          null,
+          null,
+          null
+        ]
+      },
+      "/home/devika/rails/blog_app/spec/views/layouts/_messages_spec.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null
+        ]
+      },
       "/home/devika/rails/blog_app/spec/views/pages/home_spec.rb": {
         "lines": [
           1,
@@ -2847,6 +2895,6 @@
         ]
       }
     },
-    "timestamp": 1687774395
+    "timestamp": 1687775443
   }
 }
