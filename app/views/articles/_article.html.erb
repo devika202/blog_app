@@ -18,7 +18,6 @@
               <% end %>
               <% if article.user %>
                 <p>by <%= link_to article.user.name, user_path(article.user) %></p>
-                  
               <% end %>
               <p class="card-text"><%= truncate(article.description, length: 100) %></p>
               <%= link_to "Read Full Article", article_path(article), class: "btn btn-outline-info" %><br><br>
@@ -31,14 +30,19 @@
                       <%= button_to 'Like', article_likes_path(article), method: :post, class: 'btn btn-primary' %>
                     <% end %>
                   </div>
+                <% else %>
+                <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-warning" %>
                 <% end %>
               <% else %>
                 <div class="btn-group" role="group">
-                  <%= button_to 'Like', article_likes_path(article), method: :post, class: 'btn btn-primary' %>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <%= button_to 'Like', article_likes_path(article), method: :post, class: 'btn btn-primary' %>&nbsp;&nbsp;&nbsp;
+                  <%= button_to 'Dislike', article_create_dislike_path(article), method: :post, class: 'btn btn-danger' %>
                 </div>
-                <br><br>
-              <% end %>
-              <p><b>LIKES: </b><%= article.likes.count %></p>
+              <% end %><br><br>
+              <div class="btn-group" role="group">
+                <p><b>LIKES: </b><%= article.likes.count %></p><br>&nbsp;&nbsp;&nbsp;
+                <p><b>DISLIKES: </b><%= article.dislikes.count %></p><br>
+              </div>
             </div>
             <div class="card-footer text-muted">
               <small>Created <%= time_ago_in_words(article.created_at) %> ago, edited <%= time_ago_in_words(article.updated_at) %> ago</small>

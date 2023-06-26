@@ -10,6 +10,7 @@ class Article < ApplicationRecord
     has_one_attached :image
     validate :image_presence
     has_many :likes, dependent: :destroy
+    has_many :dislikes, dependent: :destroy
     enum status: { pending: 0, approved: 1, declined: 2 }
     def image_presence
         errors.add(:image, "must be attached") unless image.attached?

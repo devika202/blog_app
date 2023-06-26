@@ -1,4 +1,5 @@
 require_relative 'boot'
+require 'warden'
 
 require 'rails/all'
 require 'will_paginate/array'
@@ -11,6 +12,7 @@ module Articles
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
     config.assets.paths << Rails.root.join("node_modules")
+    config.middleware.use Warden::Manager
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

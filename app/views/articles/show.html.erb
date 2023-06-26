@@ -31,13 +31,14 @@
                           <% end %>
                         <% else %>
                           <div class="btn-group" role="group">
-                            <%= button_to 'Like', article_likes_path(@article), method: :post, class: 'btn btn-primary' %>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <%= button_to 'Dislike', article_like_path(@article), method: :delete, class: 'btn btn-danger' %>
+                            <%= button_to 'Like', article_likes_path(@article), method: :post, class: 'btn btn-primary' %>&nbsp;&nbsp;&nbsp;
+                            <%= button_to 'Dislike', article_create_dislike_path(@article), method: :post, class: 'btn btn-danger' %>
                           </div>
                         <% end %><br><br>
-                        <p><b>LIKES: </b><%= @article.likes.count %></p><br>
-
-
+                        <div class="btn-group" role="group">
+                          <p><b>LIKES: </b><%= @article.likes.count %></p><br>&nbsp;&nbsp;&nbsp;
+                          <p><b>DISLIKES: </b><%= @article.dislikes.count %></p><br>
+                        </div><br>
                         <% if user_signed_in? && (@article.user == current_user || current_user.admin?) %>
                         <% if @article.approved? %>
                           <% if user_signed_in? && (@article.user == current_user) %>

@@ -29,13 +29,8 @@ Rails.application.routes.draw do
     resources :likes, only: [:create, :destroy]
   end
   resources :articles do
-  member do
-    post 'likes'
-    delete 'like/:like_id', action: :unlike, as: :unlike
-    post 'dislikes'
-    delete 'dislike/:like_id', action: :undislike, as: :undislike
+    resources :likes, only: [:create, :destroy]
+    post 'dislikes', to: 'likes#create_dislike', as: 'create_dislike'
+    delete 'dislikes', to: 'likes#destroy_dislike', as: 'destroy_dislike'
   end
-end
-
-  
 end
