@@ -1,27 +1,33 @@
 <div class="container" style="max-width: 1700px;">
-<h1 class="text-center mt-4 top">Articles list</h1>
-<div class="flickr_pagination">
+  <h1 class="text-center mt-4 top">Articles list</h1>
+  <div class="flickr_pagination">
     <%= will_paginate @articles, :container => false %>
-</div>
-<div class="row new " style="margin-left: 77px;">
-    <div class="col-md-3 ">
+  </div>
+  <div class="row new" style="margin-left: 77px;">
+    <div class="col-md-3">
       <br><br>
-        <div class="form-group">
-            <%= search_form_for @search, url: articles_path, method: :get, html: { class: 'form-group' } do |f| %>
-            <h3>Category</h3><br>
-            <%= link_to('View All Article', articles_path, class: "btn btn-light") %><br><br>
-                <% @categories.each do |category| %>
-                    <% checked = params[:q] && params[:q][:categories_id_eq_any].present? && params[:q][:categories_id_eq_any].include?(category.id.to_s) %>
-                    <%= check_box_tag 'q[categories_id_eq_any][]', category.id, checked %>
-                    <%= category.name %><br>
-                <% end %><br>
-                <%= f.submit "FILTER", class: 'btn btn-primary' %>
-            <% end %>
-        </div>
+      <div class="form-group">
+        <%= search_form_for @search, url: articles_path, method: :get, html: { class: 'form-group' } do |f| %>
+        <h3>Category</h3><br>
+        <%= link_to('View All Article', articles_path, class: "btn btn-light") %><br><br>
+        <% @categories.each do |category| %>
+        <% checked = params[:q] && params[:q][:categories_id_eq_any].present? && params[:q][:categories_id_eq_any].include?(category.id.to_s) %>
+        <%= check_box_tag 'q[categories_id_eq_any][]', category.id, checked %>
+        <%= category.name %><br>
+        <% end %><br>
+        <h3>Date</h3><br>
+        <%= f.label "From" %>&nbsp;
+        <%= f.date_select :created_at_gteq, class: 'form-control' %><br>
+        <%= f.label "To" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <%= f.date_select :created_at_lteq, class: 'form-control' %><br><br>
+        <%= f.submit "FILTER", class: 'btn btn-primary' %>
+        <% end %>
+      </div>
     </div>
+  </div>
 </div>
-</div>
-<%= render 'article'%>
+<%= render 'article' %>
 <div class="flickr_pagination mb-4">
-    <%= will_paginate @articles, :container => false %>
-</div><br><br><br>
+  <%= will_paginate @articles, :container => false %>
+</div>
+<br><br><br>

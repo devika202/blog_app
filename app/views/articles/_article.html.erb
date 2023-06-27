@@ -1,4 +1,4 @@
-<div class="container" style="margin-top: -378px;">
+<div class="container" style="margin-top: -515px;">
   <div class="row">
     <% @articles.each do |article| %>
       <% if article.approved? %> 
@@ -24,11 +24,8 @@
               <% if user_signed_in? %>
                 <% if current_user != article.author %>
                   <div class="btn-group" role="group">
-                    <% if article.liked_by?(current_user) %>
-                      <%= button_to 'Dislike', article_like_path(article, article.likes.find_by(user: current_user)), method: :delete, class: 'btn btn-danger' %>
-                    <% else %>
-                      <%= button_to 'Like', article_likes_path(article), method: :post, class: 'btn btn-primary' %>
-                    <% end %>
+                  <%= button_to 'Like', article_likes_path(article), method: :post, class: 'btn btn-primary' %>&nbsp;&nbsp;&nbsp;
+                  <%= button_to 'Dislike', article_create_dislike_path(article), method: :post, class: 'btn btn-danger' %>
                   </div>
                 <% else %>
                 <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-warning" %>

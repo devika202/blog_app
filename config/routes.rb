@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   root 'pages#home'
   post '/' => 'pages#home'
   get 'index', to: 'pages#index'
+  get 'home', to: 'pages#home'
+
   resources :articles
   get 'my_articles', to: 'articles#my_articles', as: 'my_articles'
   resources :users, except: [:new]
