@@ -14,7 +14,7 @@
       <img src="./assets/0.12.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2023-06-27T11:43:42+05:30">2023-06-27T11:43:42+05:30</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2023-06-27T16:16:13+05:30">2023-06-27T16:16:13+05:30</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -23,7 +23,7 @@
     <span class="group_name">All Files</span>
     (<span class="covered_percent">
       <span class="green">
-  92.45%
+  92.35%
 </span>
 
      </span>
@@ -43,11 +43,11 @@
   </div>
 
   <div class="t-line-summary">
-    <b>1470</b> relevant lines,
-    <span class="green"><b>1359</b> lines covered</span> and
-    <span class="red"><b>111</b> lines missed. </span>
+    <b>1477</b> relevant lines,
+    <span class="green"><b>1364</b> lines covered</span> and
+    <span class="red"><b>113</b> lines missed. </span>
     (<span class="green">
-  92.45%
+  92.35%
 </span>
 )
   </div>
@@ -314,12 +314,12 @@
         
           <tr class="t-file">
             <td class="strong t-file__name"><a href="#a58261ffa80e88eb2dc3d5a6a5d1a6e1ed3aa8c9" class="src_link" title="app/models/user.rb">app/models/user.rb</a></td>
-            <td class="green strong cell--number t-file__coverage">100.00 %</td>
+            <td class="yellow strong cell--number t-file__coverage">83.33 %</td>
+            <td class="cell--number">18</td>
             <td class="cell--number">12</td>
-            <td class="cell--number">7</td>
-            <td class="cell--number">7</td>
-            <td class="cell--number">0</td>
-            <td class="cell--number">1.00</td>
+            <td class="cell--number">10</td>
+            <td class="cell--number">2</td>
+            <td class="cell--number">0.83</td>
             
           </tr>
         
@@ -381,9 +381,9 @@
           <tr class="t-file">
             <td class="strong t-file__name"><a href="#dff2388d295947c9100ef54580b4cdbcea2aee76" class="src_link" title="config/initializers/assets.rb">config/initializers/assets.rb</a></td>
             <td class="green strong cell--number t-file__coverage">100.00 %</td>
-            <td class="cell--number">17</td>
-            <td class="cell--number">5</td>
-            <td class="cell--number">5</td>
+            <td class="cell--number">19</td>
+            <td class="cell--number">7</td>
+            <td class="cell--number">7</td>
             <td class="cell--number">0</td>
             <td class="cell--number">1.00</td>
             
@@ -6449,8 +6449,8 @@
   <div class="header">
     <h3>app/models/user.rb</h3>
     <h4>
-      <span class="green">
-  100.0%
+      <span class="yellow">
+  83.33%
 </span>
 
       lines covered
@@ -6459,9 +6459,9 @@
     
 
     <div class="t-line-summary">
-      <b>7</b> relevant lines.
-      <span class="green"><b>7</b> lines covered</span> and
-      <span class="red"><b>0</b> lines missed.</span>
+      <b>12</b> relevant lines.
+      <span class="green"><b>10</b> lines covered</span> and
+      <span class="red"><b>2</b> lines missed.</span>
     </div>
 
     
@@ -6516,13 +6516,13 @@
         </div>
       
         <div>
-          <li class="never" data-hits="" data-linenumber="5">
-            
-            
-
+          <li class="covered" data-hits="1" data-linenumber="5">
+            <span class="hits">1</span>
             
 
-            <code class="ruby"></code>
+            
+
+            <code class="ruby">  has_many :dislikes, dependent: :destroy</code>
           </li>
         </div>
       
@@ -6593,7 +6593,73 @@
         </div>
       
         <div>
-          <li class="never" data-hits="" data-linenumber="12">
+          <li class="covered" data-hits="1" data-linenumber="12">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  def has_liked?(article)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="13">
+            
+            
+
+            
+
+            <code class="ruby">    likes.exists?(article: article)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="14">
+            
+            
+
+            
+
+            <code class="ruby">  end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="15">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  def has_disliked?(article)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="16">
+            
+            
+
+            
+
+            <code class="ruby">    likes.exists?(article: article)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="17">
+            
+            
+
+            
+
+            <code class="ruby">  end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="18">
             
             
 
@@ -7712,8 +7778,8 @@
     
 
     <div class="t-line-summary">
-      <b>5</b> relevant lines.
-      <span class="green"><b>5</b> lines covered</span> and
+      <b>7</b> relevant lines.
+      <span class="green"><b>7</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
 
@@ -7857,24 +7923,24 @@
         </div>
       
         <div>
-          <li class="never" data-hits="" data-linenumber="13">
-            
-            
-
+          <li class="covered" data-hits="1" data-linenumber="13">
+            <span class="hits">1</span>
             
 
-            <code class="ruby"># Precompile additional assets.</code>
+            
+
+            <code class="ruby">Rails.application.config.assets.precompile += %w( jquery.js )</code>
           </li>
         </div>
       
         <div>
-          <li class="never" data-hits="" data-linenumber="14">
-            
-            
-
+          <li class="covered" data-hits="1" data-linenumber="14">
+            <span class="hits">1</span>
             
 
-            <code class="ruby"># Precompile additional assets.</code>
+            
+
+            <code class="ruby">Rails.application.config.assets.precompile += %w( jquery-ui.js )</code>
           </li>
         </div>
       
@@ -7885,7 +7951,7 @@
 
             
 
-            <code class="ruby"># application.js, application.css, and all non-JS/CSS in the app/assets</code>
+            <code class="ruby"># Precompile additional assets.</code>
           </li>
         </div>
       
@@ -7896,12 +7962,34 @@
 
             
 
-            <code class="ruby"># folder are already added.</code>
+            <code class="ruby"># Precompile additional assets.</code>
           </li>
         </div>
       
         <div>
           <li class="never" data-hits="" data-linenumber="17">
+            
+            
+
+            
+
+            <code class="ruby"># application.js, application.css, and all non-JS/CSS in the app/assets</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="18">
+            
+            
+
+            
+
+            <code class="ruby"># folder are already added.</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="19">
             
             
 
@@ -31968,7 +32056,7 @@
 
             
 
-            <code class="ruby">    expect(rendered).to have_selector(&#39;label.col-2.col-form-label.text-light[for=category_name]&#39;, text: &#39;Category Name&#39;)</code>
+            <code class="ruby">    expect(rendered).to have_selector(&#39;[for=category_name]&#39;, text: &#39;Category Name&#39;)</code>
           </li>
         </div>
       

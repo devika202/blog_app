@@ -10,6 +10,8 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 Rails.application.config.assets.precompile += %w( jquery3.js )
 Rails.application.config.assets.precompile += %w( popper.js )
 Rails.application.config.assets.precompile += %w( bootstrap.js )
+Rails.application.config.assets.precompile += %w( jquery.js )
+Rails.application.config.assets.precompile += %w( jquery-ui.js )
 # Precompile additional assets.
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets

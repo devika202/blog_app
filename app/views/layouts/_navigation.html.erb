@@ -1,92 +1,95 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <%= link_to "BLOGGER", root_path, class:"navbar-brand", id:"logo" %>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <%= link_to "About", index_path, class:"nav-link" %>
-              </li>
-            <% if user_signed_in? %>
-              <li class="nav-item">
-                <%= link_to "Bloggers", users_path, class:"nav-link" %> 
-              </li>
-              
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <%= "(Admin)" if current_user.admin? %> Profile [<%= current_user.name %>]
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <%= link_to "Edit Profile", edit_user_registration_path, class: "dropdown-item" %>
-                    <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item", data: { confirm: "Are you sure?" } %>
-                  </div>
-                </li>
-              <% else %>
-                <li class="nav-item">
-                  <%= link_to "Sign up", new_user_registration_path, class: "nav-link" %>
-                </li>
-                <li class="nav-item">
-                  <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
-                </li>
-              <% end %>
-
-            <% if user_signed_in? %>
+  <div class="container-fluid">
+    <%= link_to "BLOGGER", root_path, class:"navbar-brand", id:"logo" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <%= link_to "About", index_path, class:"nav-link" %>
+          </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "Bloggers", users_path, class:"nav-link" %> 
+          </li>
+          
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                BLOGS
+                <%= "(Admin)" if current_user.admin? %> Profile [<%= current_user.name %>]
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <% unless current_user.admin? %>
-                    <%= link_to "Create new article", new_article_path, class: "dropdown-item" %>
-                    <%= link_to "My Blogss", my_articles_path, class: "dropdown-item" %>
-                  <% else %>
-                    <%= link_to "Blogs List", admin_articles_path, class: "dropdown-item" %>
-                  <% end %>   
-                <div class="dropdown-divider"></div>
-                <%= link_to "View blogs", articles_path, class: "dropdown-item" %>
+                <%= link_to "Edit Profile", edit_user_registration_path, class: "dropdown-item" %>
+                <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item", data: { confirm: "Are you sure?" } %>
               </div>
-              <% end %>
             </li>
-            <% if !user_signed_in? %>
-              <li class="nav-item">
-                <%= link_to "View Blogs", articles_path, class: "nav-link" %>
-              </li>
-            <% end %>
-
-             
-            <% if user_signed_in? %>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Categories
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <%= link_to "Create new category", new_category_path, class: "dropdown-item" %>
-                   <div class="dropdown-divider">
-                    </div>
-                  <%= link_to "View categories",categories_path,class:"dropdown-item" %>
-                </div>
-              </li>  
-             <% end %>  
-          </ul>
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <% if current_page?(articles_path) %>
-            <form class="d-flex me-3">
-              <% @q ||= Article.ransack(params[:q]) %>
-              <%= search_form_for @q, url: articles_path, method: :get do |f| %>
-                <%= f.search_field :title_or_tags_cont, class: 'form-control me-2 text-dark', style:"width: 242px" , placeholder: 'Search by article title or tags', data: { autocomplete_source: Article.distinct.pluck(:tags).compact.to_json } %>
-                <%= f.submit 'Search', class: 'btn btn-success' %>
-              <% end %>
-            </form>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Sign up", new_user_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
+            </li>
           <% end %>
 
-          <% if user_signed_in? %>
-              <li><%= link_to "<strong>LOGOUT</strong>".html_safe, destroy_user_session_path, method: :delete, class: "nav-link" ,data: { confirm: "Are you sure to logout ?" }%></li>&nbsp; &nbsp; &nbsp;
-          <% end %> 
-        </ul>      
-      </div>
-    </nav>
+        <% if user_signed_in? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            BLOGS
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <% unless current_user.admin? %>
+                <%= link_to "Create new article", new_article_path, class: "dropdown-item" %>
+                <%= link_to "My Blogss", my_articles_path, class: "dropdown-item" %>
+              <% else %>
+                <%= link_to "Blogs List", admin_articles_path, class: "dropdown-item" %>
+              <% end %>   
+            <div class="dropdown-divider"></div>
+            <%= link_to "View blogs", articles_path, class: "dropdown-item" %>
+          </div>
+          <% end %>
+        </li>
+        <% if !user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to "View Blogs", articles_path, class: "nav-link" %>
+          </li>
+        <% end %>
+
+          
+        <% if user_signed_in? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categories
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <%= link_to "Create new category", new_category_path, class: "dropdown-item" %>
+                <div class="dropdown-divider">
+                </div>
+              <%= link_to "View categories",categories_path,class:"dropdown-item" %>
+            </div>
+          </li>  
+          <% end %>  
+      </ul>
+    <ul class="navbar-nav mb-2 mb-lg-0">
+      <% if current_page?(articles_path) %>
+        <form class="d-flex me-3">
+          <% @q ||= Article.ransack(params[:q]) %>
+          <%= search_form_for @q, url: articles_path, method: :get do |f| %>
+            <% tags_suggestions = Article.distinct.pluck(:tags).compact %>
+              <%= f.search_field :title_or_tags_cont, class: 'form-control me-2 text-dark', style: "width: 242px", placeholder: 'Search by blogs title or tags', data: { autocomplete_source: tags_suggestions.to_json }, minlength: 1 %>
+            <%= f.submit 'Search', class: 'btn btn-success' %>
+          <% end %>
+        </form>
+      <% end %>
+
+      <div id="tag-suggestions" class="tag-suggestions"></div>
+
+      <% if user_signed_in? %>
+          <li><%= link_to "<strong>LOGOUT</strong>".html_safe, destroy_user_session_path, method: :delete, class: "nav-link" ,data: { confirm: "Are you sure to logout ?" }%></li>&nbsp; &nbsp; &nbsp;
+      <% end %> 
+    </ul>      
+  </div>
+</nav>
 
 
    

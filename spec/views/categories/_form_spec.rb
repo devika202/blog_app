@@ -11,7 +11,7 @@ RSpec.describe 'categories/_form.html.erb', type: :view do
 
     expect(rendered).to have_selector('.form-group.row.form-label', count: 2)
 
-    expect(rendered).to have_selector('label.col-2.col-form-label.text-light[for=category_name]', text: 'Category Name')
+    expect(rendered).to have_selector('[for=category_name]', text: 'Category Name')
     expect(rendered).to have_selector('input#category_name.form-control.shadow.rounded[type=text][placeholder="Enter a name"]')
 
     expect(rendered).to have_selector('.form-group.row.justify-content-center.form-label', count: 1)

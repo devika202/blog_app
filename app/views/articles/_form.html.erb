@@ -8,7 +8,7 @@
           <%= f.label :title %>
         </div>
         <div class="col-10">
-          <%= f.text_field :title, class: "form-control shadow rounded", placeholder: "Title of article" %>
+          <%= f.text_field :title, class: "form-control shadow rounded", placeholder: "Title of article", required: true %>
         </div>
       </div>
       <div class="form-group row form-label">
@@ -16,7 +16,7 @@
           <%= f.label :description %>
         </div>
         <div class="col-10">
-          <%= f.text_area :description, class: "form-control shadow rounded", placeholder: "Description of an article", data: { "simplemde": true } %>
+          <%= f.text_area :description, class: "form-control shadow rounded", placeholder: "Description of an article", data: { "simplemde": true }, required: true %>
         </div>
       </div>
       <div class="form-group row form-label">
@@ -24,7 +24,7 @@
           <%= f.label :tags %>
         </div>
         <div class="col-10">
-          <%= f.text_field :tags, class: "form-control shadow rounded", placeholder: "Tags for the article" %>
+          <%= f.text_field :tags, class: "form-control shadow rounded", placeholder: "Tags for the article", required: true %>
         </div>
       </div>
 
@@ -42,7 +42,7 @@
           <%= f.label :image %>
         </div>
         <div class="col-10">
-          <%= f.file_field :image, class: "form-control-file" %>
+          <%= f.file_field :image, class: "form-control-file" , required: true%>
         </div>
       </div>
       <div class="form-group row justify-content-center form-label">

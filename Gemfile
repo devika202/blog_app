@@ -34,6 +34,7 @@ gem 'rails-erd'
 # gem 'mini_magick', '~> 4.8'
 gem 'simplecov', require: false
 gem 'kaminari'
+gem 'jquery-ui-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

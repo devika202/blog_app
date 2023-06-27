@@ -19,15 +19,30 @@
 //= require bootstrap-sprockets
 //= require my_validation_script
 //= require ckeditor/init
+//= require jquery-ui
+import "jquery-ui"
 import "@hotwired/turbo-rails"
 import "controllers"
 import "bootstrap"
-$(document).ready(function() {
-    $('input[data-autocomplete-source]').each(function() {
-      var input = $(this);
-      input.autocomplete({
-        source: JSON.parse(input.attr('data-autocomplete-source'))
-      });
+$(document).on('turbolinks:load', function() {
+  $('[data-autocomplete-source]').each(function() {
+    var source = JSON.parse($(this).data('autocomplete-source'));
+    $(this).autocomplete({
+      source: function(request, response) {
+        var term = request.term.toLowerCase();
+        var filteredSuggestions = source.filter(function(suggestion) {
+          return suggestion.toLowerCase().indexOf(term) === 0;
+        });
+        response(filteredSuggestions.slice(0, 5));
+      },
+      appendTo: '#tag-suggestions',
+      select: function(event, ui) {
+        $(this).val(ui.item.value);
+        $(this).closest('form').submit();
+        return false;
+      }
     });
   });
-  
+});
+
+
