@@ -13,13 +13,15 @@ class UsersController < ApplicationController
     end
 
     def index
-        if !user_signed_in? 
-            flash[:alert] = "Login to perform this action"
-            redirect_to categories_path
+        if !user_signed_in?
+          flash[:alert] = "Login to perform this action"
+          redirect_to categories_path
         end
-        @users = User.paginate(page: params[:page], per_page: 3)
-
-    end
+      
+        @users = User.joins(:articles).where(articles: { status: "approved" }).distinct.paginate(page: params[:page], per_page: 3)
+      end
+      
+      
 
 
     def edit
