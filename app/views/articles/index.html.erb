@@ -1,5 +1,5 @@
 <div class="container" style="max-width: 1700px;">
-  <h1 class="text-center mt-4 top">Articles list</h1>
+  <h1 class="text-center mt-4 top">Blogs list</h1>
   <div class="flickr_pagination">
     <%= will_paginate @articles, :container => false %>
   </div>
@@ -9,7 +9,7 @@
       <div class="form-group">
         <%= search_form_for @search, url: articles_path, method: :get, html: { class: 'form-group' } do |f| %>
         <h3>Category</h3><br>
-        <%= link_to('View All Article', articles_path, class: "btn btn-light") %><br><br>
+        <%= link_to('View All Blogs', articles_path, class: "btn btn-light") %><br><br>
         <% @categories.each do |category| %>
         <% checked = params[:q] && params[:q][:categories_id_eq_any].present? && params[:q][:categories_id_eq_any].include?(category.id.to_s) %>
         <%= check_box_tag 'q[categories_id_eq_any][]', category.id, checked %>
