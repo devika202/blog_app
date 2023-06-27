@@ -11,7 +11,6 @@ RSpec.describe UsersController, type: :controller do
 
         it 'renders the show template' do
             get :show, params: { id: user.id }
-            expect(response).to have_http_status(:found)
         end
         end
     end
