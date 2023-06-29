@@ -70,19 +70,57 @@
           </li>  
           <% end %>  
       </ul>
+      
     <ul class="navbar-nav mb-2 mb-lg-0">
-      <% if current_page?(articles_path) %>
-        <form class="d-flex me-3">
-          <% @q ||= Article.ransack(params[:q]) %>
-          <%= search_form_for @q, url: articles_path, method: :get do |f| %>
-            <% tags_suggestions = Article.distinct.pluck(:tags).compact %>
-              <%= f.search_field :title_or_tags_cont, class: 'form-control me-2 text-dark', style: "width: 242px", placeholder: 'Search by blogs title or tags', data: { autocomplete_source: tags_suggestions.to_json }, minlength: 1 %>
-            <%= f.submit 'Search', class: 'btn btn-success' %>
-          <% end %>
-        </form>
-      <% end %>
+        <% if current_page?(articles_path) %>
+          <form class="d-flex me-3">
+            <%= search_form_for @q, url: articles_path, method: :get do |f| %>
+              <div class="position-relative">
+                <%= f.search_field :title_or_tags_cont, class: 'form-control me-2 text-dark', style: "width: 242px", placeholder: 'Search by blog title or tags', minlength: 1 %>
+              </div>
+              <%= f.submit 'Search', class: 'btn btn-success' %>
+            <% end %>
+          </form>
 
-      <div id="tag-suggestions" class="tag-suggestions"></div>
+          <style>
+            .tag-suggestions {
+              position: relative;
+              z-index: 1001; 
+            }
+
+            .tag-suggestions-dropdown {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              z-index: 1002; 
+              background-color: #fff;
+              border: 1px solid #ccc;
+              width: 242px;
+            }
+
+            .tag-suggestions-dropdown .ui-menu-item {
+              padding: 5px;
+              cursor: pointer;
+            }
+
+            .tag-suggestions-dropdown .ui-menu-item:hover {
+              background-color: #f5f5f5;
+            }
+          </style>
+
+          <script>
+            $(document).ready(function() {
+              var autocompleteSource = <%= raw @tags_suggestions.to_json %>;
+
+              $('#q_title_or_tags_cont').autocomplete({
+                source: autocompleteSource,
+                minLength: 1,
+                select: function(event, ui) {
+                }
+              }).autocomplete('widget').addClass('tag-suggestions-dropdown');
+            });
+          </script>
+        <% end %>
 
       <% if user_signed_in? %>
           <li><%= link_to "<strong>LOGOUT</strong>".html_safe, destroy_user_session_path, method: :delete, class: "nav-link" ,data: { confirm: "Are you sure to logout ?" }%></li>&nbsp; &nbsp; &nbsp;

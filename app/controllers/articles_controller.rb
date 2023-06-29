@@ -19,6 +19,7 @@ class ArticlesController < ApplicationController
       
 
     def index
+        @tags_suggestions = Article.distinct.pluck(:tags).compact
         @search = Article.includes(:categories).ransack(params[:q])
         @articles = @search.result.includes(:categories).paginate(page: params[:page], per_page: 9)
         @categories = Category.all

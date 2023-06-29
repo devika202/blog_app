@@ -17,38 +17,11 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 60px; /* Set a height for the footer */
+  height: 60px; 
   background-color: #343a40;
   color: white;
 }
-.tag-suggestions {
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 5px;
-  z-index: 9999;
-}
 
-.tag-suggestions ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tag-suggestions li {
-  cursor: pointer;
-  padding: 5px;
-}
-
-.tag-suggestions .ui-state-focus {
-  background-color: #f4f4f4;
-}
-.tag-suggestions-list {
-  z-index: 9999;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 5px;
-}
 
 body {
   height: 100vh;
