@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       end
     end
   end
+  
   resources :articles
   get 'my_articles', to: 'articles#my_articles', as: 'my_articles'
   resources :users, except: [:new]
