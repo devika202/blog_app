@@ -7,7 +7,17 @@ Rails.application.routes.draw do
   post '/' => 'pages#home'
   get 'index', to: 'pages#index'
   get 'home', to: 'pages#home'
-
+  namespace :api, defaults: { format: 'json' } do
+    resources :articles, only: [:index, :show]
+  end
+  namespace :api do
+    resources :articles, only: [:index] do
+      collection do
+        get :filter_by_category
+        get :filter_by_date
+      end
+    end
+  end
   resources :articles
   get 'my_articles', to: 'articles#my_articles', as: 'my_articles'
   resources :users, except: [:new]

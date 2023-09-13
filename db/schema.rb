@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2023_09_12_111957) do
     t.integer "user_id"
     t.integer "status"
     t.string "tags"
-    t.integer "count"
+    t.integer "like_count"
     t.integer "dislike_count"
     t.string "category"
   end
