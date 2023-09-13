@@ -2,7 +2,7 @@ class Article < ApplicationRecord
     belongs_to :user
     belongs_to :author, class_name: 'User', foreign_key: 'user_id'
     has_many :comments
-    has_many :article_categories
+    has_many :article_categories, dependent: :destroy
     has_many :categories, through: :article_categories
     validates :title, presence: true, length: {minimum: 6, maximum: 100}
     validates :description, presence: true, length: {minimum: 10, maximum: 30000}
@@ -22,6 +22,26 @@ class Article < ApplicationRecord
         false
       end
     end
+    def like_count
+      likes.count
+    end
+  
+    def dislike_count
+      dislikes.count
+    end
+  
+    def category_list
+      categories.pluck(:name).join(', ')
+    end
     
+    after_touch :update_counters
+  
+    def update_counters
+      update(
+        like_count: like_count,
+        dislike_count: dislike_count,
+        category: category_list
+      )
+    end
 
 end

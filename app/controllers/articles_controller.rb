@@ -25,6 +25,7 @@ class ArticlesController < ApplicationController
         @categories = Category.all
         @q = Article.ransack(params[:q])
         @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
+    
     end
       
     def new
