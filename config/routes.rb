@@ -8,16 +8,18 @@ Rails.application.routes.draw do
   get 'index', to: 'pages#index'
   get 'home', to: 'pages#home'
   namespace :api, defaults: { format: 'json' } do
-    resources :articles, only: [:index, :show]
-  end
-  namespace :api do
-    resources :articles, only: [:index] do
+    resources :articles, only: [:index, :show] do
       collection do
-        get :filter_by_category
-        get :filter_by_date
+        get 'filter_config', to: 'articles#filter_config'
+        get 'tag_suggestions', to: 'articles#tag_suggestions'
+        get 'status_options', to: 'articles#status_options'
       end
     end
   end
+  namespace :api do
+    get 'filter_config', to: 'articles#filter_config'
+  end
+  
   
   resources :articles
   get 'my_articles', to: 'articles#my_articles', as: 'my_articles'
