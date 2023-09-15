@@ -25,7 +25,6 @@ module Api
           return
         end
       end
-
       render json: @articles
     end    
 
