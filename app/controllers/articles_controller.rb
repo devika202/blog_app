@@ -18,15 +18,27 @@ class ArticlesController < ApplicationController
       end
       
 
-    def index
+      def index
         @tags_suggestions = Article.distinct.pluck(:tags).compact
         @search = Article.includes(:categories).ransack(params[:q])
         @articles = @search.result.includes(:categories).paginate(page: params[:page], per_page: 9)
         @categories = Category.all
         @q = Article.ransack(params[:q])
-        @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
+        
+        if params[:q] && params[:q][:categories_id_eq_any].present? && (params[:q][:created_at_gteq].present? || params[:q][:created_at_lteq].present?)
+          category_filter = params[:q][:categories_id_eq_any]
+          from_date = params[:q][:created_at_gteq]
+          to_date = params[:q][:created_at_lteq]
     
-    end
+          articles_by_category = Article.includes(:categories).where(categories: { id: category_filter }).references(:categories)
+    
+          articles_by_date = Article.where(created_at: from_date..to_date)
+    
+          @articles = articles_by_category.union(articles_by_date).paginate(page: params[:page], per_page: 3)
+        else
+          @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
+        end
+      end
       
     def new
         @article = Article.new
