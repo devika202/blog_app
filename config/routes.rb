@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   namespace :api do
     get 'filter_config', to: 'articles#filter_config'
   end
-  
+  namespace :api do
+      resources :filters, only: [:index]
+  end
   
   resources :articles
   get 'my_articles', to: 'articles#my_articles', as: 'my_articles'

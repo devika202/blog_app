@@ -31,6 +31,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'ckeditor'
 gem 'rails-erd'
 gem 'rack-cors'
+gem 'active_model_serializers'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
