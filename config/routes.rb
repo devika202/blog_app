@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'likes/destroy'
   mount Ckeditor::Engine => '/ckeditor'
   devise_for :users
+
   root 'pages#home'
   post '/' => 'pages#home'
   get 'index', to: 'pages#index'

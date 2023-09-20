@@ -1,8 +1,8 @@
 class ArticlesController < ApplicationController
+    include ArticlesHelper
     before_action :set_article, only: [:show, :edit, :update, :destroy]
     before_action :authenticate_user!, except: [:show, :index]
     before_action :require_same_user, only: [:edit, :update, :destroy]
-
     
     def show
         @article = Article.find(params[:id])
@@ -11,52 +11,76 @@ class ArticlesController < ApplicationController
 
         else
             if @article.approved?
+
             else
                 redirect_to my_articles_path, alert: "Please wait while the admin approves to view the article."
             end
         end
-      end
+    end
       
-
-      def index
+    def index
+        @filters = Filter.all
         @tags_suggestions = Article.distinct.pluck(:tags).compact
         @search = Article.includes(:categories).ransack(params[:q])
-        @articles = @search.result.includes(:categories).paginate(page: params[:page], per_page: 9)
         @categories = Category.all
         @q = Article.ransack(params[:q])
-        
-        if params[:q] && params[:q][:categories_id_eq_any].present? && (params[:q][:created_at_gteq].present? || params[:q][:created_at_lteq].present?)
-          category_filter = params[:q][:categories_id_eq_any]
-          from_date = params[:q][:created_at_gteq]
-          to_date = params[:q][:created_at_lteq]
-    
-          articles_by_category = Article.includes(:categories).where(categories: { id: category_filter }).references(:categories)
-    
-          articles_by_date = Article.where(created_at: from_date..to_date)
-    
-          @articles = articles_by_category.union(articles_by_date).paginate(page: params[:page], per_page: 3)
+      
+        if params[:q].present? && (params[:q][:category_id_eq].present? || params[:q][:status_eq].present?)
+          category_filter = params[:q][:category_id_eq]
+          status_filter = params[:q][:status_eq]
+          Rails.logger.debug("Status Filter: #{status_filter}") 
+          from_date = params[:q][:published_at_gteq]
+          to_date = params[:q][:published_at_lteq]
+      
+          @articles = @search.result.includes(:categories)
+      
+          if category_filter.present?
+            @articles = @articles.joins(:categories).where(categories: { id: category_filter })
+          end
+      
+          if status_filter.present?
+            status_filter = Array(status_filter).map(&:to_i)
+            Rails.logger.debug("Status Filter: #{status_filter}") 
+
+            @articles = @articles.where(status: status_filter)
+          end
+          
+      
+          if from_date.present? && to_date.present?
+            @articles = @articles.where(published_at: from_date..to_date)
+          end
+      
+          @articles = @articles.paginate(page: params[:page], per_page: 3)
         else
           @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
         end
-      end
+      
+        article_ids = @articles.pluck(:id)
+        Rails.logger.debug("Filtered Article IDs: #{article_ids.join(', ')}")
+      
+    end
+
+      
       
     def new
         @article = Article.new
     end
 
     def edit
+
     end
+
     def approve
         @article = Article.find(params[:id])
         @article.update(status: :approved)
         redirect_to @article, notice: 'Article has been approved.'
-      end
+    end
       
-      def decline
+    def decline
         @article = Article.find(params[:id])
         @article.update(status: :declined)
         redirect_to @article, notice: 'Article has been declined.'
-      end
+    end
       
 
     def create
@@ -97,7 +121,9 @@ class ArticlesController < ApplicationController
         redirect_to articles_path
     end
 
+
     private
+    
 
     def set_article
         @article = Article.find(params[:id])

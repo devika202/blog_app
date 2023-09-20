@@ -7,21 +7,24 @@
     <div class="col-md-3">
       <br><br>
       <div class="form-group">
-      <%= search_form_for @search, url: articles_path, method: :get, html: { class: 'form-group' } do |f| %>
-        <h3>Category</h3><br>
-        <%= link_to('View All Blogs', articles_path, class: "btn btn-light") %><br><br>
-        <% @categories.each do |category| %>
-          <% checked = params[:q] && params[:q][:categories_id_eq_any].present? && params[:q][:categories_id_eq_any].include?(category.id.to_s) %>
-          <%= check_box_tag 'q[categories_id_eq_any][]', category.id, checked %>
-          <%= category.name %><br>
-        <% end %><br>
-        <h3>Date Range</h3><br>
-        <%= f.label "From" %>&nbsp;
-        <%= f.date_select :created_at_gteq, include_blank: true, class: 'form-control' %><br>
-        <%= f.label "To" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <%= f.date_select :created_at_lteq, include_blank: true, class: 'form-control' %><br><br>
-        <%= f.submit "FILTER", class: 'btn btn-primary' %>
-      <% end %>
+      
+        <%= form_tag articles_path, method: :get, class: 'form-group' do %>
+          <h3>Category</h3><br>
+          <%= link_to('View All Blogs', articles_path, class: "btn btn-light") %><br><br>
+          <% @filters.each do |filter| %>
+            <% if filter.filter_type == 'select' %>
+              <%= label_tag filter.name %><br>
+              <%= select_tag "q[#{filter.column_name}_eq]", options_for_select(filter_options(filter.column_name), params.dig(:q, "#{filter.column_name}_eq")), include_blank: true, style: 'width: 65%;', class: 'form-control' %><br>
+              <% elsif filter.filter_type == 'date' %>
+              <h3>Date Range</h3><br>
+              <%= label_tag "From" %>&nbsp;
+              <%= text_field_tag "q[#{filter.column_name}_gteq]", params.dig(:q, "#{filter.column_name}_gteq"), class: 'form-control', type: 'date' , style: 'width: 65%;'%><br>
+              <%= label_tag "To" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <%= text_field_tag "q[#{filter.column_name}_lteq]", params.dig(:q, "#{filter.column_name}_lteq"), class: 'form-control', type: 'date', style: 'width: 65%;' %><br><br>
+            <% end %>
+          <% end %>
+          <%= submit_tag "FILTER", class: 'btn btn-primary' %>
+        <% end %>
       </div>
     </div>
   </div>
