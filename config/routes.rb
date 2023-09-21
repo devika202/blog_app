@@ -14,6 +14,8 @@ Rails.application.routes.draw do
         get 'filter_config', to: 'articles#filter_config'
         get 'tag_suggestions', to: 'articles#tag_suggestions'
         get 'status_options', to: 'articles#status_options'
+        get 'filter_articles', to: 'articles#filter_articles'
+
       end
     end
   end
@@ -22,6 +24,9 @@ Rails.application.routes.draw do
   end
   namespace :api do
       resources :filters, only: [:index]
+  end
+  namespace :api do
+    resources :articles, defaults: { format: :json }, serializer: ArticleSerializer
   end
   
   resources :articles

@@ -14,7 +14,7 @@
           <% @filters.each do |filter| %>
             <% if filter.filter_type == 'select' %>
               <%= label_tag filter.name %><br>
-              <%= select_tag "q[#{filter.column_name}_eq]", options_for_select(filter_options(filter.column_name), params.dig(:q, "#{filter.column_name}_eq")), include_blank: true, style: 'width: 65%;', class: 'form-control' %><br>
+              <%= select_tag "q[category_id_eq]", options_for_select(Category.pluck(:name, :id), params.dig(:q, :category_id_eq)), include_blank: true, style: 'width: 65%;', class: 'form-control' %>
               <% elsif filter.filter_type == 'date' %>
               <h3>Date Range</h3><br>
               <%= label_tag "From" %>&nbsp;

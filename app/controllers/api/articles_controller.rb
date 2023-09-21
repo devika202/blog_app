@@ -1,8 +1,9 @@
 module Api
   class ArticlesController < ApplicationController
-    before_action :authenticate_user!, except: [:show, :index, :filter_config, :tag_suggestions, :status_options]
+    before_action :authenticate_user!, except: [:show, :index, :filter_config, :tag_suggestions, :status_options, :filter_articles]
 
     def index
+      @filters = Filter.all
       @articles = Article.all
       if params[:tags].present?
         tags = params[:tags].split(',')
@@ -27,6 +28,34 @@ module Api
       end
       render json: @articles
     end    
+
+    def filter_articles
+      category = params[:category]
+      tags = params[:tags].split(',') if params[:tags].present?
+      like_count = params[:like_count].to_i if params[:like_count].present?
+      status = params[:status].downcase if params[:status].present?
+      Rails.logger.info("Category: #{category}")
+      Rails.logger.info("Tags: #{tags}")
+      Rails.logger.info("Like Count: #{like_count}")
+      Rails.logger.info("Status: #{status}")
+    
+      articles = Article.all
+
+      articles = articles.where(category: category) if category.present?
+      articles = articles.where(tags: tags) if tags.present?
+      articles = articles.where('like_count >= ?', like_count) if like_count.present?
+
+      if status.present?
+        case status
+        when 'pending', 'approved', 'declined'
+          articles = articles.where(status: status)
+        else
+          return render json: { error: 'Invalid status value' }, status: :bad_request
+        end
+      end
+
+      render json: articles
+    end
 
     def show
       @article = Article.find(params[:id])
