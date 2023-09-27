@@ -20,46 +20,45 @@ class ArticlesController < ApplicationController
       
     def index
         @filters = Filter.all
-        @tags_suggestions = Article.distinct.pluck(:tags).compact
+        @tags_suggestions = Article.distinct.pluck(:tags).compact.flatten
         @search = Article.includes(:categories).ransack(params[:q])
         @categories = Category.all
         @q = Article.ransack(params[:q])
-      
-        if params[:q].present? && (params[:q][:category_id_eq].present? || params[:q][:status_eq].present?)
-          category_filter = params[:q][:category_id_eq]
-          status_filter = params[:q][:status_eq]
-          Rails.logger.debug("Status Filter: #{status_filter}") 
-          from_date = params[:q][:published_at_gteq]
-          to_date = params[:q][:published_at_lteq]
-      
-          @articles = @search.result.includes(:categories)
-      
-          if category_filter.present?
-            @articles = @articles.joins(:categories).where(categories: { id: category_filter })
-          end
-      
-          if status_filter.present?
-            status_filter = Array(status_filter).map(&:to_i)
-            Rails.logger.debug("Status Filter: #{status_filter}") 
+        @article = Article.all
+        
+        if params[:q].present? && (params[:q][:category_id_eq].present? || params[:q][:status_eq].present? || params[:q][:tags_eq].present?)
+            category_filter = params[:q][:category_id_eq]
+            status_filter = params[:q][:status_eq]
+            tags_filter = params[:q][:tags_eq]
+            from_date = params[:q][:published_at_gteq]
+            to_date = params[:q][:published_at_lteq]
+            @articles = @search.result.includes(:categories)
+            Rails.logger.debug("Received Tags: #{tags_filter.inspect}")
 
-            @articles = @articles.where(status: status_filter)
-          end
-          
-      
-          if from_date.present? && to_date.present?
-            @articles = @articles.where(published_at: from_date..to_date)
-          end
-      
-          @articles = @articles.paginate(page: params[:page], per_page: 3)
+            if category_filter.present?
+                @articles = @articles.joins(:categories).where(categories: { id: category_filter })
+            end
+        
+            if status_filter.present?
+                status_filter = Array(status_filter).map(&:to_i)
+                @articles = @articles.where(status: status_filter)
+            end
+        
+            if tags_filter.present?
+                @articles = @articles.where(tags: tags_filter)
+              end
+        
+            if from_date.present? && to_date.present?
+                @articles = @articles.where(published_at: from_date..to_date)
+            end
+        
+            @articles = @articles.paginate(page: params[:page], per_page: 3)
         else
-          @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
+            @articles = @q.result(distinct: true).paginate(page: params[:page], per_page: 3)
         end
-      
+        
         article_ids = @articles.pluck(:id)
-        Rails.logger.debug("Filtered Article IDs: #{article_ids.join(', ')}")
-      
     end
-
       
       
     def new

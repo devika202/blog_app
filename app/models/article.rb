@@ -12,6 +12,8 @@ class Article < ApplicationRecord
     has_many :likes, dependent: :destroy
     has_many :dislikes, dependent: :destroy
     enum status: { pending: 0, approved: 1, declined: 2 }
+    after_create :update_tags_filter
+
     def image_presence
         errors.add(:image, "must be attached") unless image.attached?
     end
@@ -42,6 +44,12 @@ class Article < ApplicationRecord
         dislike_count: dislike_count,
         category: category_list
       )
+    end  
+    private
+  
+    def update_tags_filter
+      filter = Filter.find_or_create_by(name: 'Tags', column_name: 'tags', filter_type: 'select')
+      tags_values = Article.distinct.pluck(:tags).compact.flatten.uniq.map { |tag| [tag, tag] }
+      filter.update(values: tags_values.to_json)
     end
-
 end

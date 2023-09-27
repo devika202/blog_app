@@ -1,8 +1,8 @@
-<div class="container" style="margin-top: -663px;">
+<div class="container" style="margin-top: -769px;">
   <div class="row">
     <% @articles.each do |article| %>
       <% if article.approved? %> 
-        <div class="col-md-8 offset-md-2 mt-4" style="margin-left: 239px; margin-top: -283px;"> 
+        <div class="col-md-8 offset-md-2 mt-4" style="margin-left: 287px;margin-top: -283px;"> 
           <div class="card text-center shadow mb-5 bg-white rounded">
             <div class="card-header fst-italic">
               <h5 class="card-title"><%= link_to article.title, article_path(article), class: "text-success" %></h5>
@@ -50,3 +50,4 @@
     <% end %>
   </div>
 </div>
+<br><br>

@@ -24,6 +24,18 @@ namespace :populate_filter_values do
         puts "Status filter not found."
         end
     end      
-  
-  end
-  
+
+      desc "Populate Tags values in Filter table"
+      task populate_tags: :environment do
+        tags_values = Article.distinct.pluck(:tags).compact.flatten.uniq.map(&:to_s)
+        tags_filter = Filter.find_by(column_name: "tags")
+    
+        if tags_filter.present?
+          tags_array = tags_values.map { |tag| [tag, tag] }
+          tags_filter.update(values: tags_array.to_json)
+          puts "Tags values updated in Filter table."
+        else
+          puts "Tags filter not found."
+        end
+      end
+  end  

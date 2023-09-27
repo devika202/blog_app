@@ -30,25 +30,77 @@ module Api
     end    
 
     def filter_articles
-      filters = params[:q] || {}
-      category_id_eq = filters.dig('category_id_eq')
-      status_eq = filters.dig('status_eq')
+      query_params = params[:q]
+      
+      if query_params.nil? || query_params == "null"
+        query_params = {}
+      else
+        begin
+          query_params = JSON.parse(query_params)
+        rescue JSON::ParserError => e
+          Rails.logger.error("Error parsing query_params JSON: #{e.message}")
+          query_params = {}
+        end
+      end
     
-      # Log the received filter values for debugging
-      Rails.logger.info("Received filters - Category: #{category_id_eq}, Status: #{status_eq}")
+      Rails.logger.info("Fetch Params: #{query_params}")
+      category_id_eq = query_params["category_id_eq"]
+      created_at_gteq = query_params["created_at_gteq"]
+      created_at_lteq = query_params["created_at_lteq"]
+      status_eq = query_params["status_eq"]
+      tags_eq = query_params["tags_eq"]
+      Rails.logger.info("Received filters - Category ID: #{category_id_eq}, Status: #{status_eq}, Created At >=: #{created_at_gteq}, Created At <=: #{created_at_lteq}, tags_eq: #{tags_eq}")
     
-      # Initialize the articles relation
+      category_name = nil
       articles = Article.all
     
-      # Apply filters based on category and status
-      articles = articles.where(category: category_id_eq) if category_id_eq.present?
-      articles = articles.where(status: status_eq) if status_eq.present?
+      if category_id_eq.present?
+        category = Category.find_by(id: category_id_eq)
+        if category.present?
+          category_name = category.name
+        else
+          Rails.logger.warn("Category with ID '#{category_id_eq}' not found")
+        end
+      end
     
-      # Render the filtered articles as JSON
-      render json: articles
+      if category_name.present?
+        articles = articles.where(category: category_name)
+      end
+    
+      if status_eq.present?
+        articles = articles.where(status: status_eq)
+      end
+      
+      if tags_eq.present?
+        articles = articles.where(tags: tags_eq)
+      end
+    
+      if created_at_gteq.present?
+        begin
+          articles = articles.where("created_at >= ?", Date.parse(created_at_gteq))
+        rescue ArgumentError => e
+          Rails.logger.error("Error parsing created_at_gteq: #{e.message}")
+        end
+      end
+    
+      if created_at_lteq.present?
+        begin
+          articles = articles.where("created_at <= ?", Date.parse(created_at_lteq))
+        rescue ArgumentError => e
+          Rails.logger.error("Error parsing created_at_lteq: #{e.message}")
+        end
+      end
+    
+      Rails.logger.info("Generated SQL Query: #{articles.to_sql}")
+      Rails.logger.info("Filtered articles: #{articles.to_a}")
+    
+      if articles.empty?
+        render json: { message: 'No data found' }, status: :not_found
+      else
+        render json: articles
+      end
     end
     
-
     def show
       @article = Article.find(params[:id])
       render json: @article
