@@ -27,7 +27,7 @@ module Api
         end
       end
       render json: @articles
-    end    
+    end
 
     def filter_articles
       query_params = params[:q]
