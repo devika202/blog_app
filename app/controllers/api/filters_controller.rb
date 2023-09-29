@@ -2,7 +2,7 @@ module Api
   class FiltersController < ApplicationController
     before_action :authenticate_user!, except: [:index]
     def index
-      filters = Filter.all
+      filters = Filter.order(:display_order)
       filter_config = []
 
       filters.each do |filter|

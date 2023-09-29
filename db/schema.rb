@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_27_044952) do
+ActiveRecord::Schema.define(version: 2023_09_29_054147) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2023_09_27_044952) do
     t.string "name"
     t.string "column_name"
     t.string "filter_type"
-    t.text "values"
+    t.integer "display_order", default: 0
   end
 
   create_table "likes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|

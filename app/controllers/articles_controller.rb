@@ -19,7 +19,7 @@ class ArticlesController < ApplicationController
     end
       
     def index
-        @filters = Filter.all
+        @filters = Filter.order(:display_order)
         @tags_suggestions = Article.distinct.pluck(:tags).compact.flatten
         @search = Article.includes(:categories).ransack(params[:q])
         @categories = Category.all
